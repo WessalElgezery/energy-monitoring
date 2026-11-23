@@ -3,7 +3,7 @@
 {"timestamp": "2022-10-01 00:00:20", "V": 224.581, "A": 0.663, "P_agg": 99.151, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 45.076, "washing_machine": 0.0, "issues": 1}
 {"timestamp": "2022-10-01 00:00:30", "V": 0.0, "A": 0.0, "P_agg": 0.0, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 0.0, "washing_machine": 0.0, "issues": 0}
 {"timestamp": "2022-10-01 00:00:40", "V": 224.137, "A": 0.653, "P_agg": 96.871, "ac_1": 120.5, "kettle": 1300.0, "boiler": 2100.0, "fridge": 43.785, "washing_machine": 450.2, "issues": 0}
-{"timestamp": "2022-10-01 00:00:50", "V": 224.100, "A": 0.650, "P_agg": 98.204, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 44.458, "washing_machine": 0.0, "issues": 0
+{"timestamp": "2022-10-01 00:00:50", "V": 224.100, "A": 0.650, "P_agg": 98.204, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 44.458, "washing_machine": 0.0, "issues": 0}
 {"V": 224.200, "A": 0.660, "P_agg": 98.500, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 44.100, "washing_machine": 0.0, "issues": 0}
 {"timestamp": "01/10/2022 00:01:10", "V": 224.300, "A": 0.665, "P_agg": 99.000, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 44.200, "washing_machine": 0.0, "issues": 0}
 {"timestamp": "2022-10-01 00:01:20", "V": 224.400, "A": 0.670, "ac_1": 0.0, "kettle": 0.0, "boiler": 0.0, "fridge": 44.300, "washing_machine": 0.0, "issues": 0}

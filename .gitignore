@@ -1,0 +1,17 @@
+# Environment & Secrets
+.env
+# Virtual Environments & Temporary Python Files
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*.log
+# Database Files & Docker Volumes
+*.db
+*.sqlite
+mysql_data/
+kafka_data/
+nifi_data/
+# Spark Checkpoints
+checkpoints/
+spark-warehouse/

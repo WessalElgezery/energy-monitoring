@@ -76,7 +76,7 @@ services:
       - energy-net
 
   spark:
-    image: apache/spark:3.5.3
+    image: apache/spark:3.5.3-java17-python3
     container_name: spark
     user: root
     restart: unless-stopped

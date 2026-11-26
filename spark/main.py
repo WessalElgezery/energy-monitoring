@@ -9,7 +9,7 @@ from mysql_writer import write_microbatch_to_mysql
 
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP", "kafka:9092")
 KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "energy.cleaned")
-CHECKPOINT = os.getenv("SPARK_CHECKPOINT", "/checkpoints/energy")
+CHECKPOINT = os.getenv("SPARK_CHECKPOINT", "/opt/spark/checkpoints/energy")
 MYSQL_HOST = os.getenv("MYSQL_HOST", "mysql")
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "energy_monitoring")

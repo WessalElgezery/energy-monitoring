@@ -92,7 +92,7 @@ def write_microbatch_to_mysql(batch_df, batch_id, mysql_url=None, user=None, pas
                 (batch_id,reading_date,hour_of_day,power_sum,power_count,max_power,min_power,
                  voltage_sum,voltage_count,max_voltage,min_voltage,current_sum,current_count,
                  max_current,min_current,issues_count,total_rows)
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
                 ON DUPLICATE KEY UPDATE
                 power_sum=VALUES(power_sum), power_count=VALUES(power_count),
                 max_power=VALUES(max_power), min_power=VALUES(min_power),

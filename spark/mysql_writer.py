@@ -10,6 +10,14 @@ from datetime import date, datetime
 from importlib import import_module
 from processing import transform_batch
 
+USAGE_COLS = ["reading_date", "hour_of_day", "appliance_name", "sum_power",
+              "max_power", "min_power", "reading_count", "total_rows"]
+
+HOUSE_SUMMARY_COLS = ["reading_date", "hour_of_day", "power_sum", "power_count",
+                      "max_power", "min_power", "voltage_sum", "voltage_count",
+                      "max_voltage", "min_voltage", "current_sum", "current_count",
+                      "max_current", "min_current", "issues_count", "total_rows"]
+
 try:
     mysql_connector = import_module("mysql.connector")
 except ImportError as exc:
@@ -68,7 +76,8 @@ def write_microbatch_to_mysql(batch_df, batch_id, mysql_url=None, user=None, pas
 
         # 3) Per-microbatch hourly appliance partial aggregates.
         usage_rows = [
-            (int(batch_id), *row) for row in _rows(outputs["usage_summary"])
+            (int(batch_id), *row)
+            for row in _rows(outputs["usage_summary"].select(*USAGE_COLS))
         ]
         if usage_rows:
             cur.executemany("""
@@ -83,9 +92,10 @@ def write_microbatch_to_mysql(batch_df, batch_id, mysql_url=None, user=None, pas
             """, usage_rows)
 
         # 4) Per-microbatch house partial aggregates.
-        house_summary_rows = [
-            (int(batch_id), *row) for row in _rows(outputs["house_summary"])
-        ]
+            house_summary_rows = [
+                (int(batch_id), *row)
+                for row in _rows(outputs["house_summary"].select(*HOUSE_SUMMARY_COLS))
+            ]
         if house_summary_rows:
             cur.executemany("""
                 INSERT INTO house_summary

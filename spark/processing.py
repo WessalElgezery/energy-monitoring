@@ -45,10 +45,15 @@ def transform_batch(batch_df):
         F.col("A").alias("current_a"), F.col("P_agg").alias("whole_house_power"),
         F.col("issues").cast("integer").alias("issues")
     )
-    appliance_parts = [batch_df.select(
-        F.concat(F.col("event_id"), "_", F.lit(name)).alias("event_id"),
-        "event_time", F.lit(name).alias("appliance_name"), F.col(name).alias("power")
-    ) for name in APPLIANCES]
+    appliance_parts = [
+        batch_df.select(
+            F.concat(F.col("event_id"), F.lit("_"), F.lit(a)).alias("event_id"),
+            F.col("event_time"),
+            F.lit(a).alias("appliance_name"),
+            F.col(a).alias("power"),
+        )
+        for a in APPLIANCES   # your loop variable and list name may differ
+    ]
     appliance = appliance_parts[0]
     for part in appliance_parts[1:]:
         appliance = appliance.unionByName(part)
@@ -61,17 +66,19 @@ def transform_batch(batch_df):
     for part in long_parts[1:]:
         long_df = long_df.unionByName(part)
     usage = long_df.groupBy("reading_date", "hour_of_day", "appliance_name").agg(
-        F.sum("power").alias("sum_power"), F.max("power").alias("max_power"),
-        F.min("power").alias("min_power"), F.count("power").alias("reading_count"),
-        F.count("*").alias("total_rows")
+        F.coalesce(F.sum("power"), F.lit(0.0)).alias("sum_power"),
+        F.max("power").alias("max_power"),        # <- put this line back
+        F.min("power").alias("min_power"),
+        F.count("power").alias("reading_count"),
+        F.count("*").alias("total_rows"),
     )
 
     house_summary = with_time.groupBy("reading_date", "hour_of_day").agg(
-        F.sum("P_agg").alias("power_sum"), F.count("P_agg").alias("power_count"),
+        F.coalesce(F.sum("P_agg"), F.lit(0.0)).alias("power_sum"), F.count("P_agg").alias("power_count"),
         F.max("P_agg").alias("max_power"), F.min("P_agg").alias("min_power"),
-        F.sum("V").alias("voltage_sum"), F.count("V").alias("voltage_count"),
+        F.coalesce(F.sum("V"), F.lit(0.0)).alias("voltage_sum"), F.count("V").alias("voltage_count"),
         F.max("V").alias("max_voltage"), F.min("V").alias("min_voltage"),
-        F.sum("A").alias("current_sum"), F.count("A").alias("current_count"),
+        F.coalesce(F.sum("A"), F.lit(0.0)).alias("current_sum"), F.count("A").alias("current_count"),
         F.max("A").alias("max_current"), F.min("A").alias("min_current"),
         F.sum(F.when(F.col("issues") == 1, 1).otherwise(0)).alias("issues_count"),
         F.count("*").alias("total_rows")

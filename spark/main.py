@@ -35,6 +35,7 @@ def main():
         .option("kafka.bootstrap.servers", KAFKA_BOOTSTRAP)
         .option("subscribe", KAFKA_TOPIC)
         .option("startingOffsets", os.getenv("KAFKA_STARTING_OFFSETS", "earliest"))
+        .option("maxOffsetsPerTrigger", os.getenv("SPARK_MAX_OFFSETS", "5000"))   # <- add
         .option("failOnDataLoss", "false")
         .load()
     )
@@ -44,12 +45,14 @@ def main():
     outputs = parse_and_transform(raw_stream)
 
     def write_batch(batch_df, batch_id):
-        # Each destination is written independently but with the same Spark batch ID.
-        # The writer uses MySQL upserts, making retries safe for the agreed keys.
-        write_microbatch_to_mysql(
-            batch_df, int(batch_id),
-            mysql_url=MYSQL_URL, user=MYSQL_USER, password=MYSQL_PASSWORD
-        )
+        batch_df.persist()
+        try:
+            write_microbatch_to_mysql(
+                batch_df, int(batch_id),
+                mysql_url=MYSQL_URL, user=MYSQL_USER, password=MYSQL_PASSWORD
+            )
+        finally:
+            batch_df.unpersist()
 
     # A single foreachBatch callback receives parsed event rows and transforms them
     # into the five table payloads before upserting. This avoids multiple stream

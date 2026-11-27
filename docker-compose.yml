@@ -12,7 +12,7 @@ services:
       - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./database:/docker-entrypoint-initdb.d
+      - ./database/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
@@ -76,7 +76,10 @@ services:
       - energy-net
 
   spark:
-    image: apache/spark:3.5.3-java17-python3
+    build:
+      context: .
+      dockerfile: spark/Dockerfile
+    image: energy-monitoring-spark:3.5.3
     container_name: spark
     user: root
     restart: unless-stopped
@@ -93,7 +96,6 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      SPARK_SUBMIT_OPTS: "-Dspark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3,com.mysql:mysql-connector-j:8.0.33"
     command: tail -f /dev/null
     ports:
       - "${SPARK_UI_PORT:-4040}:4040"

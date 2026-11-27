@@ -101,7 +101,7 @@ docker exec -it kafka bash /opt/kafka/custom-scripts/create_topics.sh
 3. **Apache Spark Streaming:** Submit the streaming job inside the Spark container:
 
    ```
-   docker exec -it spark /opt/spark/bin/spark-submit /opt/spark/work-dir/main.py
+   docker exec -it spark /opt/spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3 /opt/spark/work-dir/main.py
    ```
 
 4. **Python Producer:** Start streaming readings from the host machine:

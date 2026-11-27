@@ -93,7 +93,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      SPARK_SUBMIT_OPTS: "-Dspark.jars.packages=org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3,com.mysql:mysql-connector-j:8.0.33"
+      PYSPARK_SUBMIT_ARGS: "--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3,com.mysql:mysql-connector-j:8.0.33 pyspark-shell"
     command: tail -f /dev/null
     ports:
       - "${SPARK_UI_PORT:-4040}:4040"

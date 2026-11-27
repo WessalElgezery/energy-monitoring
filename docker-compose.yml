@@ -96,6 +96,7 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
     command: tail -f /dev/null
     ports:
       - "${SPARK_UI_PORT:-4040}:4040"
